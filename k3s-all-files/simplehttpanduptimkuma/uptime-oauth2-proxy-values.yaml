@@ -1,0 +1,45 @@
+config:
+  provider: oidc
+  clientID: uptime-kuma
+  clientSecret: J2bbiGAZenA7EsKr0Hx4O4ovYh3RGg3H
+  cookieSecret: CjaqmBa91gqSP29P9n6Rcg==
+  redirectURL: https://uptime.joshiharshal.cloud/oauth2/callback
+  oidcIssuerURL: https://keycloak.joshiharshal.cloud/realms/uptime-realm
+  cookieSecure: true
+  emailDomains:
+    - "*"
+
+extraArgs:
+  - --provider=oidc
+  - --oidc-issuer-url=https://keycloak.joshiharshal.cloud/realms/uptime-realm
+  - --redirect-url=https://uptime.joshiharshal.cloud/oauth2/callback
+  - --upstream=http://uptime-kuma-service.simple-http.svc.cluster.local:8009/
+  - --set-authorization-header=true
+  - --set-xauthrequest=true
+  - --skip-provider-button=true
+  - --scope=openid email profile
+  - --show-debug-on-error=true
+  - --ssl-insecure-skip-verify=true
+  - --skip-auth-route=^/$
+  - --skip-auth-route=^/favicon.ico$
+  - --skip-auth-route=^/api/.*
+  - --email-domain=*
+  - --pass-access-token=true
+  - --pass-user-headers=true
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - uptime.joshiharshal.cloud
+  tls:
+    - secretName: uptime-kuma-cert
+      hosts:
+        - uptime.joshiharshal.cloud

@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: uptime-oauth2
+  namespace: simple-http
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`uptime.joshiharshal.cloud`)
+      kind: Rule
+      services:
+        - name: uptime-oauth2-oauth2-proxy
+          port: 4180
+  tls:
+    certResolver: letsencrypt

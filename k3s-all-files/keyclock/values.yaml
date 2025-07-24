@@ -1,0 +1,39 @@
+# Helm values for Keycloak
+global:
+  postgresql:
+    auth:
+      username: bn_keycloak
+      password: bn_keycloak
+      database: bitnami_keycloak
+
+auth:
+  adminUser: admin
+  adminPassword: admin
+
+postgresql:
+  enabled: true
+  auth:
+    username: bn_keycloak
+    password: bn_keycloak
+    database: bitnami_keycloak
+
+service:
+  type: ClusterIP
+
+extraEnvVars:
+  - name: KC_HOSTNAME
+    value: keycloak.joshiharshal.cloud
+  - name: KC_HOSTNAME_STRICT
+    value: "true"
+  - name: KC_HTTP_ENABLED
+    value: "true"
+  - name: KC_PROXY
+    value: edge
+  - name: KC_PRODUCTION
+    value: "true"
+  - name: VERTX_WORKER_POOL_SIZE
+    value: "20"
+  - name: VERTX_EVENT_LOOP_POOL_SIZE
+    value: "8"
+
+proxy: edge

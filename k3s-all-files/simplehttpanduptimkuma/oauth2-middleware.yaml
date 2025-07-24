@@ -1,0 +1,13 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: oauth2-auth
+  namespace: simple-http
+spec:
+  forwardAuth:
+    address: http://oauth2-proxy.simple-http.svc.cluster.local:4180
+    trustForwardHeader: true
+    authResponseHeaders:
+      - X-Auth-Request-User
+      - X-Auth-Request-Email
+      - Authorization
