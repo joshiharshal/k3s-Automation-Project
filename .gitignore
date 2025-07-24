@@ -1,8 +1,16 @@
-# Terraform
+# Terraform directory state and provider files
 terraform/.terraform/
 terraform/*.tfstate
 terraform/*.tfstate.backup
+terraform/*.tfvars
 terraform/.terraform.lock.hcl
+
+# Global Terraform files (if any outside terraform/)
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
+.terraform/
 
 # Ansible inventory and sensitive files
 ansible/inventory.ini
@@ -17,6 +25,6 @@ __pycache__/
 # Logs
 *.log
 
-# IDEs
+# IDEs and editor folders
 .vscode/
 .idea/
