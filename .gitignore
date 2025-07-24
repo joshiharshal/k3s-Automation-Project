@@ -8,4 +8,8 @@ terraform.tfvars
 .terraform.lock.hcl
 
 # Ansible inventory or secrets
-inventory.ini
+ansible/inventory.ini
+
+# Environment variable files (global)
+*.env
+**/*.env
