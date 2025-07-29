@@ -1,9 +1,9 @@
 config:
   provider: oidc
-  clientID: uptime-kuma
-  clientSecret: J2bbiGAZenA7EsKr0Hx4O4ovYh3RGg3H
-  cookieSecret: Kd0Qryu4HGkoFJsAsusaow==
-  redirectURL: https://uptime.joshiharshal.cloud/oauth2/callback
+  clientID: longhorn-client
+  clientSecret: 1nwrodErtunjWvrgruFpSgZ7cY771pzi
+  cookieSecret: QfXH9KAnoioWMnl6sx0b9Q==
+  redirectURL: https://longhorn.joshiharshal.cloud/oauth2/callback
   oidcIssuerURL: https://keycloak.joshiharshal.cloud/realms/uptime-realm
   cookieSecure: true
   emailDomains:
@@ -12,18 +12,17 @@ config:
 extraArgs:
   - --provider=oidc
   - --oidc-issuer-url=https://keycloak.joshiharshal.cloud/realms/uptime-realm
-  - --redirect-url=https://uptime.joshiharshal.cloud/oauth2/callback
-  - --upstream=http://uptime-kuma-service.simple-http.svc.cluster.local:8009/
+  - --redirect-url=https://longhorn.joshiharshal.cloud/oauth2/callback
+  - --upstream=http://longhorn-frontend.longhorn.svc.cluster.local:80
   - --set-authorization-header=true
   - --set-xauthrequest=true
   - --skip-provider-button=true
+  - --verbosity=3
   - --scope=openid email profile
-  - --code-challenge-method=S256
   - --show-debug-on-error=true
   - --ssl-insecure-skip-verify=true
-  # - --skip-auth-route=^/$
-  # - --skip-auth-route=^/favicon.ico$
-  # - --skip-auth-route=^/api/.*
+  - --skip-auth-route=^/favicon.ico$
+  - --skip-auth-route=^/api/.*
   - --email-domain=*
   - --pass-access-token=true
   - --pass-user-headers=true
@@ -38,9 +37,10 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: longhorn-oauth2-auth@kubernetescrd
   hosts:
-    - uptime.joshiharshal.cloud
+    - longhorn.joshiharshal.cloud
   tls:
-    - secretName: uptime-kuma-cert
+    - secretName: longhorn-tls
       hosts:
-        - uptime.joshiharshal.cloud
+        - longhorn.joshiharshal.cloud

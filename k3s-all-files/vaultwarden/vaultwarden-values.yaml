@@ -1,0 +1,37 @@
+image:
+  repository: vaultwarden/server
+  tag: latest
+
+env:
+  DATA_FOLDER: /data
+  ADMIN_TOKEN: NsX51W3praXbXFKh54/o5YzYAIT0jr98ErBbC1xu3CI=
+  DOMAIN: "https://vaultwarden.joshiharshal.cloud"
+
+service:
+  main:
+    ports:
+      http:
+        port: 80
+
+persistence:
+  data:
+    enabled: true
+    storageClass: longhorn
+    accessMode: ReadWriteOnce
+    size: 1Gi
+
+ingress:
+  main:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: vaultwarden.joshiharshal.cloud
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: vaultwarden-tls
+        hosts:
+          - vaultwarden.joshiharshal.cloud

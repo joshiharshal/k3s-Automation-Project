@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: longhorn-ingress
+  namespace: longhorn
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: longhorn-longhorn-oauth2-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: longhorn.joshiharshal.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: longhorn-frontend 
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - longhorn.joshiharshal.cloud
+      secretName: longhorn-tls
